@@ -18,7 +18,7 @@ export function Red(opacity) {
 }
 
 export function Green(opacity) {
-	return 'rgba(122, 244, 66, ' + String(opacity)  + ')'
+	return 'rgba(15, 153, 96, ' + String(opacity)  + ')'
 }
 
 

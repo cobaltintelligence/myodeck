@@ -2,7 +2,7 @@
 // Yuan Wang
 
 import React, { Component } from 'react';
-import { White, PrimaryColor, Red, Green } from '../global/Colors.js'
+import { Black, White, PrimaryColor, Red, Green } from '../global/Colors.js'
 import axios from 'axios'
 import { __COMPONENT_STYLES__ } from '../global/Styles.js'
 import Icon from 'react-icons-kit';
@@ -10,6 +10,7 @@ import { roundN } from '../helpers/calcs.js'
 import { boldUp } from 'react-icons-kit/entypo/boldUp'
 import { boldDown } from 'react-icons-kit/entypo/boldDown'
 import { Area, AreaChart, Brush, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
+import { Checkbox } from '@blueprintjs/core'
 
 const __DEV__ = false
 
@@ -37,6 +38,12 @@ export default class ChartsPane extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      showSmall: true,
+      showLarge: true,
+      showElectrical: true,
+      showTotal: true,
+    }
   }
 
   componentDidMount() {
@@ -50,18 +57,43 @@ export default class ChartsPane extends Component {
     return (
       <div style={styles.container}>
 
+        <Checkbox 
+          label="Show Small Components"
+          checked={this.state.showSmall} 
+          large
+          onChange={() => this.setState({showSmall: !this.state.showSmall})}/>
+        
+        <Checkbox 
+          label="Show Large Components"
+          checked={this.state.showLarge} 
+          large
+          onChange={() => this.setState({showLarge: !this.state.showLarge})}/>
+        
+        <Checkbox 
+          label="Show Electrical Components"
+          checked={this.state.showElectrical} 
+          large
+          onChange={() => this.setState({showElectrical: !this.state.showElectrical})}/>
+
+        <Checkbox 
+          label="Show Total"
+          checked={this.state.showTotal} 
+          large
+          onChange={() => this.setState({showTotal: !this.state.showTotal})}/>
+
+        <br/>
           <AreaChart 
-            width={800} 
+            width={650} 
             height={300} 
             data={this.props.data}
             margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
             <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="white" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={White(0.8)} stopOpacity={0.8}/>
                 <stop offset="95%" stopColor={White(0.8)} stopOpacity={0}/>
               </linearGradient>
 
-              <linearGradient id="electronics" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="electrical" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={Green(0.8)} stopOpacity={0.8}/>
                 <stop offset="95%" stopColor={Green(0.8)} stopOpacity={0}/>
               </linearGradient>
@@ -80,47 +112,64 @@ export default class ChartsPane extends Component {
             <YAxis 
               stroke={White(0.8)}
               type="number" 
-              domain={['dataMin', 'dataMax']}
+              allowDecimals={false}
+              domain={[0, 'dataMax']}
               />
 
             <XAxis 
               stroke={White(0.8)}
               type="number" 
+              allowDecimals={false}
+              unit={" units"}
               dataKey={'units'}
               domain={['dataMin', 'dataMax']}
               />
 
-            <Area 
-              key='total'
-              type="monotone" 
-              dataKey={'total'} 
-              stroke={White(0.8)} 
-              fillOpacity={1} 
-              fill="url(#colorUv)" />
+            {
+              this.state.showTotal ? 
+              <Area 
+                key='total'
+                type="monotone" 
+                dataKey={'total'} 
+                stroke={Black(0.5)}
+                fillOpacity={1} 
+                fill="url(#white)" /> : null 
+            }
 
-            <Area 
-              key="small"
-              type="monotone" 
-              dataKey={'small'} 
-              stroke={PrimaryColor(0.8)} 
-              fillOpacity={1} 
-              fill="url(#small)" />
+            {
+              this.state.showSmall ? 
+              <Area 
+                key="small"
+                type="monotone" 
+                dataKey={'small'} 
+                stroke={PrimaryColor(1)}
+                fillOpacity={1} 
+                fill="url(#small)" /> : null
+            }
 
-            <Area 
-              key="large"
-              type="monotone" 
-              dataKey={'large'} 
-              stroke={Red(0.8)} 
-              fillOpacity={1} 
-              fill="url(#large)" />
 
-            <Area 
-              key="electronics"
-              type="monotone" 
-              dataKey={'electronics'} 
-              stroke={Green(0.8)} 
-              fillOpacity={1} 
-              fill="url(#electronics)" />
+            {
+              this.state.showLarge ? 
+              <Area 
+                key="large"
+                type="monotone" 
+                dataKey={'large'} 
+                stroke={Red(1)}
+                fillOpacity={1} 
+                fill="url(#large)" /> : null
+            }
+
+
+            {
+              this.state.showElectrical ? 
+              <Area 
+                key="electrical"
+                type="monotone" 
+                dataKey={'electrical'} 
+                stroke={Green(1)}
+                fillOpacity={1} 
+                fill="url(#electrical)" /> : null
+            }
 
             <Brush
               height={30}
@@ -129,9 +178,10 @@ export default class ChartsPane extends Component {
               fill={White(0.2)}
               />
 
-            <Tooltip/>
+            <Tooltip 
+              stroke={White(0.2)}
+              fill={White(0.2)}/>
           </AreaChart>
-
 
       </div>
     )
@@ -144,7 +194,7 @@ const styles = {
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    flexDirection: 'row',
+    flexDirection: 'column',
     display: 'flex',
     marginBottom: 40,
   },

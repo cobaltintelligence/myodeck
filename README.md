@@ -1,13 +1,8 @@
-# Crestview Alpha
-This project was prototyped for Chief Commissioner Graham Fountain to illustrate basic model UI development capabilities. Current tools are not yet equipped with economic models but are instead intended to illustrate presentational value and 
+# Myodeck Pricing Tool
+This project was prototyped to illustrate the software possibilities in modeling cost and revenue quickly and transparently. The models themselves are coarse and make broad assumptions currently. It is our intention to make these models more precise, potentially incorporating parts-level and BOM level data.
 
-## Resources
-*Resources to be explored*
 
-- React Map GL: https://uber.github.io/react-map-gl/#/
-- React Vis (esp. for Sankeys): https://github.com/uber/react-vis, https://uber.github.io/react-vis/
-- D3 Sankey: https://github.com/d3/d3-sankey
-- Palantir Blueprint: http://blueprintjs.com/docs/v2/#blueprint
+Reach directions could include the incorporation of financing analysis, esp. considering interest rate exposure, consumer credit, etc.
 
 ## Features
 [WIP]

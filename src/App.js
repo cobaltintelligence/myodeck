@@ -8,13 +8,18 @@ import BackgroundImage from './components/BackgroundImage.js'
 import { __COMPONENT_STYLES__ } from './global/Styles.js'
 import { Black, White, PrimaryColor } from './global/Colors.js'
 import ChartsPane from './components/ChartsPane.js'
+import PiePane from './components/PiePane.js'
 import axios from 'axios'
 import ScrollArea from 'react-scrollbar'
 // import FlowsPane from './components/FlowsPane.js'
 import './index.css'
 import { dataGen } from './helpers/calcs.js'
-import { Slider } from '@blueprintjs/core'
+import { RangeSlider, Slider } from '@blueprintjs/core'
 
+const __MIN_SMALL_COMPONENT_UNIT_COST__ = 1000
+const __MIN_ELECTRONICS_UNIT_COST__ = 1000
+const __MIN_LARGE_COMPONENT_UNIT_COST__ = 2000
+const __MIN_LABOR_UNIT_COST__ = 1000
 
 const __MAX_SMALL_COMPONENT_UNIT_COST__ = 10000
 const __MAX_ELECTRONICS_UNIT_COST__ = 10000
@@ -33,10 +38,10 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      smallComponentsUnitCost: 8000,
-      electronicsUnitCost: 7000,
-      largeComponentsUnitCost: 5000,
-      laborUnitCost: 8000
+      smallComponentsUnitCost: [__MIN_SMALL_COMPONENT_UNIT_COST__ + 2000, 9000],
+      electronicsUnitCost: [__MIN_ELECTRONICS_UNIT_COST__ + 2000, 10000],
+      largeComponentsUnitCost: [__MIN_LARGE_COMPONENT_UNIT_COST__ + 2000, 5000],
+      laborUnitCost: [__MIN_LABOR_UNIT_COST__ + 2000, 8000]
     }
   }
   componentDidMount() {
@@ -145,8 +150,8 @@ class App extends Component {
               </p>
 
               <div style={styles.controlsContainer}>
-                <Slider 
-                  min={0}
+                <RangeSlider 
+                  min={__MIN_SMALL_COMPONENT_UNIT_COST__}
                   max={__MAX_SMALL_COMPONENT_UNIT_COST__}
                   labelStepSize={ __MAX_SMALL_COMPONENT_UNIT_COST__ / __SLIDE_STEP_LABEL_COUNT__ }
                   stepSize={__MAX_SMALL_COMPONENT_UNIT_COST__ / 50}
@@ -175,8 +180,8 @@ class App extends Component {
                 </p>
 
               <div style={styles.controlsContainer}>
-                <Slider 
-                  min={0}
+                <RangeSlider 
+                  min={__MIN_LARGE_COMPONENT_UNIT_COST__}
                   max={__MAX_LARGE_COMPONENT_UNIT_COST__}
                   labelStepSize={ __MAX_LARGE_COMPONENT_UNIT_COST__ / __SLIDE_STEP_LABEL_COUNT__ }
                   stepSize={__MAX_LARGE_COMPONENT_UNIT_COST__ / 50}
@@ -206,8 +211,8 @@ class App extends Component {
               </p>
 
               <div style={styles.controlsContainer}>
-                <Slider 
-                  min={0}
+                <RangeSlider 
+                  min={__MIN_ELECTRONICS_UNIT_COST__}
                   max={__MAX_ELECTRONICS_UNIT_COST__}
                   labelStepSize={  __MAX_ELECTRONICS_UNIT_COST__ / __SLIDE_STEP_LABEL_COUNT__ }
                   stepSize={__MAX_ELECTRONICS_UNIT_COST__ / 50}
@@ -215,6 +220,26 @@ class App extends Component {
                   value={this.state.electronicsUnitCost} 
                   />
               </div>
+
+              <p 
+                style={{
+                  ...__COMPONENT_STYLES__.bold,
+                  ...{
+                    color: White(0.8)
+                  }
+                }}>
+                {"Labor"}
+              </p>
+              <p 
+                style={{
+                  ...__COMPONENT_STYLES__.paragraph,
+                  ...{
+                    color: White(0.8)
+                  }
+                }}>
+                {"Coming soon: labor costs are not currently modeled."}
+              </p>
+              <br/>
 
 
             </ScrollArea>
@@ -247,6 +272,7 @@ class App extends Component {
                     width: 300
                   }
                 }}/>
+              <PiePane data={data} />
 
             
               <h1 
@@ -256,7 +282,7 @@ class App extends Component {
                     color: White(0.8)
                   }
                 }}>
-                {"Production Costs"}
+                {"Production Costs Over Time"}
               </h1>
               
               <div 

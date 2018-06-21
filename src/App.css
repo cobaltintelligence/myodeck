@@ -7,6 +7,14 @@
     color: rgba(255, 255, 255, 0.5);
 }
 
+.pt-checkbox {
+  color: rgba(255, 255, 255, 1);
+}
+
+.tooltip {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .App {
   text-align: center;
 }
